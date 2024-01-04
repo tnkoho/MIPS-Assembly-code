@@ -1,0 +1,1 @@
+We provided 2 files for a CPU simulation;one written in c++ and the other one on a web(though not complete).The c++ CPU emulation runs on a windows console and works perfectly. Compile with 'g++ main.cpp -Os -s' while web Simulator  executes CPU instructions written in a specific format using JavaScript.
