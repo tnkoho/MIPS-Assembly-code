@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CPU Simulator</title>
+    <style>
+        /* CSS styling for the simulator UI */
+        #code-input {
+            width: 100%;
+            height: 200px;
+        }
+
+        #output {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CPU Simulator</h1>
+
+    <h3>Code</h3>
+    <textarea id="code-input"></textarea>
+
+    <button onclick="runCode()">Run</button>
+
+    <h3>Output</h3>
+    <div id="output"></div>
+
+    <script>
+        function runCode() {
+            // Get the code input
+            var codeInput = document.getElementById('code-input').value;
+
+            // Split the code into individual instructions
+            var instructions = codeInput.split('\n');
+
+            // CPU state variables
+            var memory = new Array(100).fill(0);
+            var accumulator = 0;
+            var programCounter = 0;
+
+            // Output string
+            var output = '';
+
+            // Execute instructions
+            while (programCounter < instructions.length) {
+                var instruction = instructions[programCounter];
+
+                // Split the instruction into opcode and operand
+                var parts = instruction.split(' ');
+                var opcode = parts[0];
+                var operand = parseInt(parts[1]);
+
+                switch (opcode) {
+                    case 'LOAD':
+                        accumulator = operand;
+                        programCounter++;
+                        break;
+
+                    case 'ADD':
+                        accumulator += operand;
+                        programCounter++;
+                        break;
+
+                    case 'STORE':
+                        memory[operand] = accumulator;
+                        programCounter++;
+                        break;
+
+                    case 'JUMP':
+                        programCounter = operand;
+                        break;
+
+                    case 'JUMPZ':
+                        if (accumulator === 0) {
+                            programCounter = operand;
+                        } else {
+                            programCounter++;
+                        }
+                        break;
+
+                    case 'PRINT':
+                        output += 'Output: ' + memory[operand] + '<br>';
+                        programCounter++;
+                        break;
+
+                    case 'HALT':
+                        document.getElementById('output').innerHTML = output;
+                        return;
+
+                    default:
+                        output += 'Invalid instruction: ' + instruction + '<br>';
+                        document.getElementById('output').innerHTML = output;
+                        return;
+                }
+            }
+
+            document.getElementById('output').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
